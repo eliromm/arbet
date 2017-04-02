@@ -1,0 +1,20 @@
+@import services.EventService
+@import model.Event
+
+@(events:List[(EventService, Seq[Event])])
+
+
+@main("Services") {
+
+<a href="load?live=true">get live data</a>
+<div class="well">
+    @for(event <- events) {
+    <div>
+        @event._1.getEventSourceName<br>
+        @event._2.length
+    </div>
+    }
+
+</div>
+
+}

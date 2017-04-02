@@ -1,0 +1,15 @@
+version: 0.1
+
+phases:
+  build:
+    commands:
+      - echo Build started on `date`
+      - sbt dist
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - target/universal/arbet-1.0-SNAPSHOT.zip
+    - appspec.yml
+  discard-paths: yes

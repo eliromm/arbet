@@ -1,0 +1,12 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET     /                           controllers.Application.index()
+GET     /load                    controllers.Application.load(live:Option[Boolean])
+GET     /merge                    controllers.Application.mergeEvents()
+GET     /arbs                    controllers.Application.arbs()
+GET     /results                    controllers.Application.results(league:Option[String])
+GET     /resultsdate                    controllers.Application.resultsdate()
+
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

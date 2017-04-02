@@ -1,0 +1,32 @@
+@(events: List[(String, List[model.Event])])
+
+@import scala.math.BigDecimal.RoundingMode;var divId=1;
+@import views.ArbHelpers;
+
+@main("Results") {
+
+<script type="text/javascript">
+function showHideDiv(id) {
+    var e = document.getElementById(id);
+    if(e.style.display == null || e.style.display == "none") {
+        e.style.display = "block";
+    } else {
+        e.style.display = "none";
+    }
+}
+</script>
+
+    <div class="well">
+        <ol>
+            @events.map(event => {
+            divId = divId + 1
+            ArbHelpers.displayData(divId.toString,event._1,event._2)
+
+            })
+        </ol>
+    </div>
+
+}
+
+<!--Event(date: Date,id:Int,league:String,participant1:String,participant2:String,
+                 moneyLine1:BigDecimal,moneyLine2:BigDecimal,draw:Option[BigDecimal]=None,source:String)-->

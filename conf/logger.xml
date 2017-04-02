@@ -1,0 +1,103 @@
+<configuration>
+
+    <conversionRule conversionWord="coloredLevel" converterClass="play.api.Logger$ColoredLevel"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/application.log</file>
+        <encoder>
+            <pattern>%date - [%level] - from %logger in %thread %n%message%n%xException%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%coloredLevel %logger{15} - %message%n%xException{5}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="play" level="INFO"/>
+
+    <logger name="betclic" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <file>logs/betclic.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+    <logger name="betfred" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/betfred.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+    <logger name="betfair" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/betfair.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+    <logger name="betclic" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/betclic.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+    <logger name="bookmakerseu" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/bookmakerseu.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+    <logger name="intertops" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/intertops.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+    <logger name="pinnacle" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/pinnacle.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+    <logger name="smarkets" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/smarkets.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+
+    <logger name="application" level="INFO">
+        <appender-ref ref="FILE"/>
+    </logger>
+
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE" />
+    </root>
+
+
+</configuration>

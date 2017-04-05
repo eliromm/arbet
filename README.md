@@ -3,7 +3,7 @@
 ## What is Arbet? 
 Arbet is an arbitrage finder in online sports betting
 
-you can try it here : http://ec2-54-245-216-75.us-west-2.compute.amazonaws.com:9000/
+you can try it here : http://arbet.tk:9000/
 
 ## What is arbitrage betting?
 In short, it means betting on all outcomes of a single event, in a way that regardless of the result, the bettor will profit. 

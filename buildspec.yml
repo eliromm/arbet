@@ -12,4 +12,7 @@ artifacts:
   files:
     - target/universal/arbet-1.0-SNAPSHOT.zip
     - appspec.yml
+    - scripts/install.sh
+    - scripts/start.sh
+    - scripts/cleanup.sh
   discard-paths: yes

@@ -3,3 +3,22 @@ os: linux
 files:
   - source: /
     destination: /home/play-app/prod
+permissions:
+  - object: /home/play-app/prod
+    pattern: "**"
+    owner: ubuntu
+    type:
+      - file
+hooks:
+  BeforeInstall:
+    - location: cleanup.sh
+      timeout: 20
+      runas: ubuntu
+  AfterInstall:
+    - location: install.sh
+      timeout: 20
+      runas: ubuntu
+  ApplicationStart:
+    - location: start.sh
+      timeout: 20
+      runas: root

@@ -17,30 +17,37 @@ import scala.concurrent.{Await, Future}
   */
 object BetFairService extends EventService {
 
-  override def getEvents(live: Boolean): Seq[Event] = {
-    implicit val system = ActorSystem()
-    import system.dispatcher
-    val conf = ConfigFactory.load()
-    val appKey = conf.getString("betfairService.appKey")
-    val username = conf.getString("betfairService.username")
-    val password = conf.getString("betfairService.password")
-    val apiUrl = conf.getString("betfairService.apiUrl")
-    val isoUrl = conf.getString("betfairService.isoUrl")
+  implicit val system = ActorSystem()
+  import system.dispatcher
+  val conf = ConfigFactory.load()
+  val appKey = conf.getString("betfairService.appKey")
+  val username = conf.getString("betfairService.username")
+  val password = conf.getString("betfairService.password")
+  val apiUrl = conf.getString("betfairService.apiUrl")
+  val isoUrl = conf.getString("betfairService.isoUrl")
 
-    val config = Configuration(appKey, username, password, apiUrl, isoUrl)
-    val command = new BetfairServiceNGCommand(config)
+  val config = Configuration(appKey, username, password, apiUrl, isoUrl)
+
+  val command = new BetfairServiceNGCommand(config)
+
+
+  val competitions=Seq(59,61,55,81,83,31,7129730,117,9404054)
+
+
+  override def getEvents(live: Boolean): Seq[Event] = {
 
     val betfairServiceNG = new BetfairServiceNG(config, command)
 
     // log in to obtain a session id
     val sessionTokenFuture = betfairServiceNG.login map {
-      case Some(loginResponse) => loginResponse.token
-      case _ => throw BetfairServiceNGException("no session token")
+      case Some(loginResponse) =>
+        getLogger.info(s"result is $loginResponse")
+        loginResponse.token
+      case x => throw BetfairServiceNGException(s"no session token, response was $x")
     }
 
     val sessionToken = Await.result(sessionTokenFuture, 10 seconds)
 
-    val competitions=Seq(59,61,55,81,83,31,7129730,117,9404054)
 
     val result = competitions.map(competitionId => {
 
@@ -52,6 +59,7 @@ object BetFairService extends EventService {
           MarketProjection.COMPETITION), MarketSort.FIRST_TO_START, 500
       ) map {
         case Some(listMarketCatalogueContainer) =>
+          getLogger.info(s"catalog is $listMarketCatalogueContainer")
           listMarketCatalogueContainer.result
         case None =>
           List()

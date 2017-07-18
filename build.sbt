@@ -25,6 +25,7 @@ libraryDependencies ++= Seq(
   "io.spray" %% "spray-client" % sprayV,
   "io.spray" %% "spray-routing" % sprayV,
 //  "io.spray" % "spray-testkit" % sprayV,
+  "net.sourceforge.htmlunit" % "htmlunit" % "2.27",
   "io.spray" %% "spray-json" % sprayV
 )
 

@@ -79,7 +79,26 @@
             </encoder>
         </appender>
     </logger>
+    <logger name="betway" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/betway.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
     <logger name="smarkets" level="INFO" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/smarkets.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+
+   <logger name="org.apache.http.wire" level="ERROR" additivity="false">
         <appender name="FILE" class="ch.qos.logback.core.FileAppender">
             <append>false</append>
             <file>logs/smarkets.log</file>

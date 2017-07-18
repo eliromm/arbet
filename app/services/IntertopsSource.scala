@@ -45,7 +45,7 @@ object IntertopsSource extends EventService{
       val away = lines.filter(line => (line \@ "name").equals("odds2")).head
       val draw = lines.find(line => (line \@ "name").equals("oddsdraw"))
       Some(Event(dateFormat.parse((game \ "Date").text),
-        (game \@ "id").toInt,
+        game \@ "id",
         parseLeague(league),
         names(0),
         names(1),

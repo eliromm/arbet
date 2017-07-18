@@ -19,6 +19,7 @@ object SmarketsSource extends EventService {
 
   val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
   dateFormat.setTimeZone(TimeZone.getTimeZone("Etc/GMT"))
+  val regex = "/sport/tennis/([^/]*)/.*".r
 
   override def getUrl(url: String): Elem = {
     implicit val codec = Codec("UTF-8")
@@ -36,20 +37,33 @@ object SmarketsSource extends EventService {
     marketNode.flatMap(market => {
       try {
         val date = (event \@ "date") + " " + (event \@ "time")
-        val home = (market \ "contract").filter(contract => (contract \@ "slug").equals("home"))
-        val away = (market \ "contract").filter(contract => (contract \@ "slug").equals("away"))
-        val draw = (market \ "contract").filter(contract => (contract \@ "slug").equals("draw"))
+        val (home,away,draw,league) = if (event \@ "type" == "Tennis match"){
+          val matcher = regex.pattern.matcher(event \@ "url")
+            matcher.find()
+
+          ((market \ "contract")(0),
+          (market \ "contract")(1),
+          NodeSeq.Empty,matcher.group(1))
+        }
+        else {
+          ((market \ "contract").filter(contract => (contract \@ "slug").equals("home")),
+           (market \ "contract").filter(contract => (contract \@ "slug").equals("away")),
+          (market \ "contract").filter(contract => (contract \@ "slug").equals("draw")),
+            event \@ "parent")
+
+        }
+
 
         Some(Event(dateFormat.parse(date),
-          Integer.valueOf(event \@ "id"),
-          parseLeague(event \@ "parent"),
+          event \@ "id",
+          parseLeague(league),
 
           home \@ "name",
           away \@ "name",
 
           BigDecimal((home \ "offers" \ "price").head.\@("decimal")),
           BigDecimal((away \ "offers" \ "price").head.\@("decimal")),
-          Some(BigDecimal((draw \ "offers" \ "price").head.\@("decimal")))
+          (draw \ "offers" \ "price").headOption.map(elem => BigDecimal(elem.\@("decimal") ))
           , getEventSourceName, event.toString()))
       }
       catch {
@@ -68,7 +82,7 @@ object SmarketsSource extends EventService {
 
   override def filterGames(file: NodeSeq): NodeSeq = file.filter(
     event =>
-      (event \@ "type") == "Football match"
+      ((event \@ "type") == "Football match") || ((event \@ "type") == "Tennis match")
 
   )
 

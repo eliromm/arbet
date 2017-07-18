@@ -29,7 +29,7 @@ object BookmakersEuSource extends EventService{
         dateFormat.parse((game \@ "gmdt") + " - " + (game \@ "gmtm"))
       }.getOrElse(new Date(0))
 
-      val event = Event(resultDate, 1, parseLeague(game \@ "idlg"), game \@ "htm", game \@ "vtm",
+      val event = Event(resultDate, game \@"idgm", parseLeague(game \@ "idlg"), game \@ "htm", game \@ "vtm",
         toDecimal((line \@ "hoddst").toInt), toDecimal((line \@ "voddst").toInt),
         line.attribute("vspoddst").filter(_.head.head.text.nonEmpty).map(node => toDecimal(node.head.text.toInt)),
         getEventSourceName,game.toString())

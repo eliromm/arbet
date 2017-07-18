@@ -31,7 +31,7 @@ object BetFairService extends EventService {
   val command = new BetfairServiceNGCommand(config)
 
 
-  val competitions=Seq(59,61,55,81,83,31,7129730,117,9404054)
+  val competitions=Seq(59,61,55,81,83,31,7129730,117,9404054,11349530)
 
 
   override def getEvents(live: Boolean): Seq[Event] = {
@@ -95,14 +95,15 @@ object BetFairService extends EventService {
   def convertMarketBooktoEvent(marketBook: MarketBook,marketCatalogue: MarketCatalogue) :Option[Event] = {
 
     try {
-      val runner1 = marketCatalogue.runners.get(0)
-      val runner2 = marketCatalogue.runners.get(1)
-      val runner3 = marketCatalogue.runners.get(2)
-      Some(Event(marketCatalogue.marketStartTime.get.toDate,1,
+      val runnerList = marketCatalogue.runners.get
+      val runner1 = runnerList(0)
+      val runner2 = runnerList(1)
+      val runner3 = if(runnerList.size==3) Some(runnerList(2)) else None
+      Some(Event(marketCatalogue.marketStartTime.get.toDate,"",
         parseLeague(marketCatalogue.competition.get.name),runner1.runnerName,runner2.runnerName,
         BigDecimal(marketBook.runners.find(_.selectionId == runner1.selectionId).get.ex.get.availableToBack.head.price),
         BigDecimal(marketBook.runners.find(_.selectionId == runner2.selectionId).get.ex.get.availableToBack.head.price),
-        Some(BigDecimal(marketBook.runners.find(_.selectionId == runner3.selectionId).get.ex.get.availableToBack.head.price)),
+        runner3.map(res => BigDecimal(marketBook.runners.find(_.selectionId == res.selectionId).get.ex.get.availableToBack.head.price)),
         getEventSourceName,marketBook.toString + marketCatalogue.toString
       ) )
     }

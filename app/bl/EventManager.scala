@@ -24,7 +24,7 @@ object EventManager {
   val dataPath = Play.configuration.getString("online_data.path").getOrElse("online_data") + "/"
   val teamsNames: List[List[String]] = Play.configuration.getList("tuples").map(_.toList.map(_.unwrapped().asInstanceOf[java.util.ArrayList[String]].toList)).getOrElse(List())
   val availableExchanges = Map(("betfred", BetfredSource), ("pinnacle", PinnacleSource), ("intertops", IntertopsSource),
-    ("bookmakerseu", BookmakersEuSource), ("betclic", BetclicSource), ("betfair", BetFairService), ("smarkets", SmarketsSource))
+    ("bookmakerseu", BookmakersEuSource), ("betclic", BetclicSource), ("betfair", BetFairService), ("smarkets", SmarketsSource), ("betway", BetWay))
 
   var storage = Map[String, List[Event]]()
   var arbs = Map[String, List[Event]]()
@@ -130,7 +130,7 @@ object EventManager {
   def createKey(p1: String, p2: String, date: Date): String = {
 
     def nomalForm(s: String): String = {
-      normalize(StringUtils.stripAccents(StringEscapeUtils.unescapeHtml4(Normalizer.normalize(s.trim, Normalizer.Form.NFKC)).toLowerCase))
+      normalize(StringUtils.stripAccents(StringEscapeUtils.unescapeHtml4(Normalizer.normalize(s.trim, Normalizer.Form.NFKC)).toLowerCase).replaceAll(" +"," "))
     }
 
     s"${nomalForm(p1)} vs ${nomalForm(p2)}@${dateFormat.format(date)}"

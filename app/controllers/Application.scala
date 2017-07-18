@@ -14,7 +14,7 @@ object Application extends Controller {
       League.Leagues.find(_.toString.compareToIgnoreCase(name)==0)
     })
 
-    val stringToList = leagueName.fold(EventManager.storage)(lea => EventManager.storage.filter(_._2.head.league == lea.toString))
+    val stringToList = leagueName.fold(EventManager.storage)(lea => EventManager.storage.filter(_._2.exists(_.league == lea.toString)))
 
     Ok(views.html.results(stringToList.toList.sortBy(_._2.head.date)))
   }

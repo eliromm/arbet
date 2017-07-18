@@ -38,7 +38,7 @@ abstract class EventService {
   def getEventsk(live : Boolean=false):Seq[Event] = {
    val buffer = ListBuffer[Event]()
     for (i <-  1 to 100){
-      buffer += Event(new Date(),1,"","","",1,1,None,"test","")
+      buffer += Event(new Date(),"","","","",1,1,None,"test","")
    }
 
     buffer

@@ -41,7 +41,7 @@ object Arbitrage {
 
         ArbitrageAnalysis(margin, maxResult1, maxResult2, maxResult3, stake1, stake2, stake3, win)
       }
-      else ArbitrageAnalysis(margin, 0, 0, 0, 0, 0, 0, 0)
+      else ArbitrageAnalysis(margin, maxResult1, maxResult2, maxResult3, 0, 0, 0, 0)
 
     }
 
@@ -68,7 +68,7 @@ object Arbitrage {
 
         ArbitrageAnalysis(margin, maxResult1, maxResult2, 0, stake1, stake2, 0, win)
       }
-      else ArbitrageAnalysis(margin, 0, 0, 0, 0, 0, 0, 0)
+      else ArbitrageAnalysis(margin, maxResult1, maxResult2, 0, 0, 0, 0, 0)
     }
   }
 }

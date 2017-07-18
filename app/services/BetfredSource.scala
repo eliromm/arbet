@@ -44,9 +44,10 @@ object BetfredSource extends EventService {
 
     data.flatMap(datas => datas.child.flatMap(file => {
       val league = file \@ "name"
-      getGames(file).map(filterGames).flatMap(nodes => nodes.map(game => {
+      val events = getGames(file)
+      events.map(event => (filterGames(event \ "bettype"),parseDate(event \@ "date",event \@ "time" ))).flatMap(nodes => nodes._1.map(game => {
         getLogger.info(s"game $game")
-        val parsedGame = parseMyGame(game, league)
+        val parsedGame = parseMyGame(game, league,nodes._2)
         getLogger.info(s"parsed game $parsedGame")
         parsedGame
       }
@@ -54,19 +55,15 @@ object BetfredSource extends EventService {
     })).flatten
   }
 
-  def parseMyGame(bettype: Node, league: String): Option[Event] = {
+  def parseMyGame(bettype: Node, league: String,resultDate:Date): Option[Event] = {
 
     val bets = bettype \ "bet"
     val home = bets.filter(bet => bet \@ "had-value" == "HOME").head
     val away = bets.filter(bet => bet \@ "had-value" == "AWAY").head
     val draw = bets.find(bet => bet \@ "had-value" == "DRAW")
 
-    val resultDate = Try {
-      dateFormat.parse((bettype \@ "bet-start-date") + " - " + (bettype \@ "bet-start-time"))
-    }.getOrElse(new Date(0))
-
     val event = Event(resultDate,
-      1,
+      bettype \@ "bettypeid",
       parseLeague(league),
       home \@ "name",
       away \@ "name",
@@ -78,13 +75,19 @@ object BetfredSource extends EventService {
     Some(event)
   }
 
+  private def parseDate(dateVal:String,timeVal:String) = {
+    Try {
+      dateFormat.parse(dateVal +" - " + timeVal)
+    }.getOrElse(new Date(0))
+  }
+
   override def getEventSourceName: String = "betfred"
 
   override def getGames(file: NodeSeq): NodeSeq = {
-    file \ "event" \ "bettype"
+    file \ "event"
   }
 
   override def filterGames(file: NodeSeq): NodeSeq = {
-    file.filter(bettype => (bettype \@ "name") == "Match Result")
+    file.filter(bettype => (bettype \@ "name") == "Match Result" && (bettype \@ "inrunning") == "0" )
   }
 }

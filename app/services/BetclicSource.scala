@@ -53,7 +53,7 @@ object BetclicSource extends EventService {
       if (bets.nonEmpty && names.length == 2) {
         val date = dateFormat.parse(game \@ "start_date")
 
-        val parsedEvent = Event(date, 1, parseLeague(league), names(0), names(1),
+        val parsedEvent = Event(date, game \@ "id", parseLeague(league), names(0), names(1),
           bets.find(_._2.equals("%1%")).get._1, bets.find(_._2.equals("%2%")).get._1,
           bets.find(_._2.equals("Draw")).map(_._1), getEventSourceName, game.toString())
 

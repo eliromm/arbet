@@ -5,13 +5,14 @@ import model.Event
 import play.twirl.api.Html
 
 import scala.math.BigDecimal.RoundingMode
+import scala.xml.Elem
 
 /**
   * Created by E on 01/12/2016.
   */
 object ArbHelpers {
 
-  def displayData(divId:String,name:String,events:Seq[Event])= {
+  def displayData(divId:String,name:String,events:Seq[Event]): Elem = {
     val arbitrageAnalysis = Arbitrage.compute(events)
 
     <div>
@@ -26,25 +27,39 @@ object ArbHelpers {
       </div>
       }}
 
+
       <table  class="table table-striped" style ="border:1px solid #000;">
-        {events.map(game => {
-        val tt = "showHideDiv('" + divId + "')"
+        {
+        var i=0
+        events.map(game => {
+          i +=1
+
+        val providerDivId = divId + "-" + i
+        val tt = "showHideDiv('" + providerDivId + "')"
         <tr>
 
           <td>{game.date}</td><td>{game.id}</td><td>{game.league}</td>
           <td>{game.participant1}</td><td>{game.participant2}</td>
-          <td>{game.moneyLine1.setScale(2,RoundingMode.HALF_UP)}</td><td>{game.moneyLine2.setScale(2,RoundingMode.HALF_UP)}</td>
-          <td>{game.draw.map(_.setScale(2,RoundingMode.HALF_UP)).getOrElse("")}</td>
+          <td>{ boldify(arbitrageAnalysis.line1,game.moneyLine1,events)}</td>
+          <td>{ boldify(arbitrageAnalysis.line2,game.moneyLine2,events)}</td>
+          <td>{ game.draw.map(res => boldify(arbitrageAnalysis.line3,res,events) ).getOrElse("")}</td>
           <td>{game.provider}</td>
           <td>
 
             <button onclick={tt}>source</button>
-            <div id={divId.toString} style="display:none">{Html(game.sourceXml)}</div>
+            <div id={providerDivId} style="display:none">{Html(game.sourceXml)}</div>
           </td>
 
         </tr>
       })}
       </table>
     </div>
+  }
+
+  def boldify(maxLine: BigDecimal,actualLine :BigDecimal,events :Seq[_]): Serializable ={
+    val rounded = actualLine.setScale(2, RoundingMode.HALF_UP)
+
+     if(maxLine==actualLine && events.size > 1) <b>{rounded}</b> else rounded
+
   }
 }

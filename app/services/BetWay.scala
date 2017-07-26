@@ -13,6 +13,7 @@ import scala.concurrent.duration.Duration
   */
 object BetWay extends EventService {
 
+  val duration: Duration = Duration.apply("20 sec")
   val dateFormat = new SimpleDateFormat("MM/dd/yyy HH:mm")
 
   override def getEvents(live: Boolean): Seq[Event] = {
@@ -101,7 +102,7 @@ object BetWay extends EventService {
 
     })
 
-    Await.result(res, Duration.apply("10 sec"))
+    Await.result(res, duration)
   }
 
   override def getEventSourceName: String = "betway"

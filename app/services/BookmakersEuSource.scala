@@ -47,6 +47,6 @@ object BookmakersEuSource extends EventService{
   override def getGames(file: NodeSeq): NodeSeq = file \ "Leagues" \ "league" \ "game"
 
   override def filterGames(file: NodeSeq): NodeSeq = {
-    file.filter(node => (node \@ "gpd") == "Game" && (node \@ "htm") != "No" && (node \@ "htm") != "Yes")
+    file.filter(node => (node \@ "gpd") == "Game" && (node \@ "propCount") == "0" && (node \@ "htm") != "No" && (node \@ "htm") != "Yes")
   }
 }

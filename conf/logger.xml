@@ -101,12 +101,25 @@
    <logger name="org.apache.http.wire" level="ERROR" additivity="false">
         <appender name="FILE" class="ch.qos.logback.core.FileAppender">
             <append>false</append>
-            <file>logs/smarkets.log</file>
+            <file>logs/htmlunit.log</file>
             <encoder>
                 <pattern>%message%n</pattern>
             </encoder>
         </appender>
     </logger>
+
+
+    <logger name="com.gargoylesoftware.htmlunit.javascript" level="ERROR" additivity="false">
+        <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+            <append>false</append>
+            <file>logs/htmlunit.log</file>
+            <encoder>
+                <pattern>%message%n</pattern>
+            </encoder>
+        </appender>
+    </logger>
+
+
 
     <logger name="application" level="INFO">
         <appender-ref ref="FILE"/>

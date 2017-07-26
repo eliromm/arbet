@@ -1,7 +1,8 @@
 package services
 
 import java.text.SimpleDateFormat
-import java.util.{Calendar, Date, TimeZone}
+import java.util.logging.Level
+import java.util.{Calendar, TimeZone}
 
 import com.gargoylesoftware.htmlunit.html._
 import model.Event
@@ -13,10 +14,6 @@ import model.Event
 object PinnacleSource extends EventService {
   val dateFormatNoYear = new SimpleDateFormat("E dd/MM")
   val timeFormat = new SimpleDateFormat("HH.mm")
-
-  //  System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog")
-  //  System.setProperty("org.apache.commons.logging.LogFactory", "org.apache.commons.logging.impl.LogFactoryImpl")
-
 
   override def getEvents(live: Boolean): Seq[Event] = {
     import scala.collection.JavaConverters._

@@ -22,6 +22,9 @@ object PinnacleSource extends EventService {
     import scala.collection.JavaConverters._
     val urls = List("https://www.pinnacle.com/en/odds/match/soccer/england/england-premier-league"
       , "https://www.pinnacle.com/en/odds/match/soccer/germany/bundesliga"
+      , "https://www.pinnacle.com/en/odds/match/soccer/uefa/uefa-champions-league-qualifiers"
+      , "https://www.pinnacle.com/en/odds/match/soccer/uefa/uefa-europa-league"
+      , "https://www.pinnacle.com/en/odds/match/soccer/uefa/uefa-europa-league-qualifiers"
 
     )
 
@@ -70,8 +73,8 @@ object PinnacleSource extends EventService {
                 }
                 else None
 
-                Some(Event(calendar.getTime, "", league, getTableValue(tbody, 1, 2), getTableValue(tbody, 2, 2), BigDecimal(getTableValue(tbody, 1, 3))
-                  , BigDecimal(getTableValue(tbody, 2, 3)), drawOdds, PinnacleSource.getClass.getSimpleName, ""))
+                Some(Event(calendar.getTime, "", parseLeague(league), getTableValue(tbody, 1, 2), getTableValue(tbody, 2, 2), BigDecimal(getTableValue(tbody, 1, 3))
+                  , BigDecimal(getTableValue(tbody, 2, 3)), drawOdds, getEventSourceName, ""))
 
               }
               catch {

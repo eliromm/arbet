@@ -31,7 +31,7 @@ object BetFairService extends EventService {
   val command = new BetfairServiceNGCommand(config)
 
 
-  val competitions=Seq(59,61,55,81,83,31,7129730,117,9404054,11349530)
+  val competitions=Seq(59,61,55,81,83,31,7129730,117,9404054,11349530,228,2005)
 
 
   override def getEvents(live: Boolean): Seq[Event] = {

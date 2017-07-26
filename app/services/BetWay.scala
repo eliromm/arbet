@@ -51,7 +51,8 @@ object BetWay extends EventService {
 
     val client = NingWSClient()
 
-    val leagues = List(("england", "premier-league"), ("germany", "bundesliga"))
+    val leagues = List(("england", "premier-league"), ("germany", "bundesliga")
+      ,("european-cups","uefa-champions-league"),("european-cups","uefa-europa-league"))
 
     val eventualEventIds = leagues.map(leagueName => {
       val eventsRequest = client.url("https://sports.betway.com/api/Events/V2/GetGroup?t=445eb573-34fc-4072-8dcc-9958c3c9a80c").
@@ -88,7 +89,7 @@ object BetWay extends EventService {
 
           event.markets.map(foundMarket => {
             val market = markets(foundMarket)
-            Event(dateFormat.parse(event.date + " " + event.time), market.id.toString, event.league,
+            Event(dateFormat.parse(event.date + " " + event.time), market.id.toString, parseLeague(event.league),
               market.teams(0), market.teams(2), outcomes(market.outcomeIds(0)(0)),
               outcomes(market.outcomeIds(0)(2)), Some(outcomes(market.outcomeIds(0)(1))),
               getEventSourceName, response.body)
